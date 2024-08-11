@@ -17,9 +17,8 @@ app.post("/generate-password", (req, res) => {
   if (useLowercase) characters += "abcdefghijklmnopqrstuvwxyz";
   if (useUppercase) characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   if (useNumbers) characters += "0123456789";
-  if (useSymbols) characters += "!@#$%^&*()_+[]{}|;:,.<>?"; // Only using symbols
+  if (useSymbols) characters += "!@#$%^&*()_+[]{}|;:,.<>?";
 
-  // Ensure there's at least one character set selected
   if (characters === "") {
     return res
       .status(400)
@@ -49,7 +48,7 @@ app.post("/send-email", async (req, res) => {
     from: "your-email@gmail.com",
     to: email,
     subject: `Your Generated Password: ${passwordName}`,
-    text: `Your password: ${password}`,
+    text: `Password Name: ${passwordName}\nPassword: ${password}`,
   };
 
   try {
