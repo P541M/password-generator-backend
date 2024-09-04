@@ -38,7 +38,8 @@ app.post("/generate-password", (req, res) => {
 app.post("/send-email", async (req, res) => {
   const { email, password, passwordName } = req.body;
 
-  // Use environment variables for email and password
+  console.log("Email data received:", email, password, passwordName);
+
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -55,10 +56,12 @@ app.post("/send-email", async (req, res) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions); // Send email
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully!");
     res.json({ success: true });
   } catch (error) {
-    res.status(500).json({ success: false, error });
+    console.error("Error sending email:", error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
