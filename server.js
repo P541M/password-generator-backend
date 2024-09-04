@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+require("dotenv").config(); // Add this line to load .env variables
 
 const app = express();
 app.use(cors());
@@ -36,23 +37,25 @@ app.post("/generate-password", (req, res) => {
 // Email Password
 app.post("/send-email", async (req, res) => {
   const { email, password, passwordName } = req.body;
+
+  // Use environment variables for email and password
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "your-email@gmail.com",
-      pass: "your-password",
+      user: process.env.GMAIL_USER, // Get from .env
+      pass: process.env.GMAIL_PASS, // Get from .env
     },
   });
 
   let mailOptions = {
-    from: "your-email@gmail.com",
-    to: email,
-    subject: `Your Generated Password: ${passwordName}`,
-    text: `Password Name: ${passwordName}\nPassword: ${password}`,
+    from: process.env.GMAIL_USER, // Sender's email address
+    to: email, // Recipient email from request
+    subject: `Your Generated Password: ${passwordName}`, // Email subject
+    text: `Password Name: ${passwordName}\nPassword: ${password}`, // Email body
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions); // Send email
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error });
