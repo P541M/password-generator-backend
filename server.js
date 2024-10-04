@@ -9,6 +9,16 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Helper function to escape HTML special characters
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 // Password Generator
 app.post("/generate-password", (req, res) => {
   const { length, useNumbers, useUppercase, useLowercase, useSymbols } =
@@ -61,6 +71,9 @@ app.post("/send-email", async (req, res) => {
     },
   });
 
+  // Escape the password before including it in the email
+  const escapedPassword = escapeHtml(password);
+
   let mailOptions = {
     from: process.env.GMAIL_USER, // Sender's email address
     to: email, // Recipient email from request
@@ -69,7 +82,7 @@ app.post("/send-email", async (req, res) => {
       <p>Thank you for using our <strong>Password Generator</strong>!</p>
       <p>Here is your generated password:</p>
       <p><strong>Password Name:</strong> <em>${passwordName}</em></p>
-      <p><strong>Password:</strong> <em>${password}</em></p>
+      <p><strong>Password:</strong> <em>${escapedPassword}</em></p>
       <p><em>This is an automated email sent from <strong>Password Generator</strong>. Please do not reply to this email.</em></p>
     `,
   };
