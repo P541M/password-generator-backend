@@ -38,7 +38,20 @@ app.post("/generate-password", (req, res) => {
 app.post("/send-email", async (req, res) => {
   const { email, password, passwordName } = req.body;
 
+  // Log the received data
   console.log("Email data received:", email, password, passwordName);
+
+  // Check if any required fields are missing
+  if (!email || !password || !passwordName) {
+    console.error("Missing required fields:", {
+      email,
+      password,
+      passwordName,
+    });
+    return res
+      .status(400)
+      .json({ success: false, error: "Missing required fields" });
+  }
 
   let transporter = nodemailer.createTransport({
     service: "Gmail",
