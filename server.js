@@ -52,7 +52,7 @@ app.post("/send-email", async (req, res) => {
     from: process.env.GMAIL_USER, // Sender's email address
     to: email, // Recipient email from request
     subject: `Your Generated Password: ${passwordName}`, // Email subject
-    text: `Password Name: ${passwordName}\nPassword: ${password}`, // Email body
+    text: `Thank you for using our Password Generator!\n\nHere are is your generated password:\n\nPassword Name: ${passwordName}\nPassword: ${password}\n\nThis is an automated email sent from Password Generator. Please do not reply to this email.`,
   };
 
   try {
