@@ -1,6 +1,7 @@
 {
   "name": "password-generator-backend",
   "version": "1.0.0",
+  "description": "Serverless backend for the Password Generator app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
